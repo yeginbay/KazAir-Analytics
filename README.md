@@ -61,7 +61,9 @@
 2. **Создайте базу данных:**
    ```sql
    CREATE DATABASE airports_db;
-Создайте таблицы через SQL (например, через pgAdmin).
+1️⃣ Создание таблиц и импорт данных
+
+Создайте таблицы в базе данных (например, через pgAdmin).
 
 Импортируйте CSV-файлы в правильном порядке:
 
@@ -77,10 +79,12 @@ airport_frequencies
 
 runways
 
-Настройте подключение к базе в main.py:
+2️⃣ Настройка подключения к базе
 
-python
-Копировать код
+В файле main.py настройте подключение к вашей базе данных:
+
+import psycopg2
+
 conn = psycopg2.connect(
     dbname="airports_db",
     user="YOUR_USERNAME",
@@ -88,49 +92,46 @@ conn = psycopg2.connect(
     host="localhost",
     port="5432"
 )
-Запустите Python скрипт:
 
-bash
-Копировать код
+3️⃣ Запуск Python-скрипта
 python main.py
-Результаты сохранятся в папку analytics_results в формате CSV.
 
-SQL Queries
-Все аналитические запросы сохранены в файле queries.sql.
 
-Примеры запросов:
+Результаты автоматически сохранятся в папку analytics_results в формате CSV.
+
+4️⃣ Примеры аналитических запросов
 
 Количество аэропортов по странам:
 
-sql
-Копировать код
 SELECT iso_country, COUNT(*) AS airport_count
 FROM airports
 GROUP BY iso_country
 ORDER BY airport_count DESC;
+
+
 Средняя длина ВПП по аэропортам:
 
-sql
-Копировать код
 SELECT a.name AS airport, AVG(r.length_ft) AS avg_runway_length
 FROM runways r
 JOIN airports a ON r.airport_ident = a.ident
 GROUP BY a.name
 ORDER BY avg_runway_length DESC;
-Project Structure
-graphql
-Копировать код
+
+
+Все SQL-запросы сохранены в файле queries.sql и проверены на корректность.
+
+5️⃣ Структура проекта
 KazAir-Analytics/
 │
-├─ main.py                 # Python script to execute queries and save CSV
-├─ queries.sql             # All SQL analytical queries
-├─ README.md               # Project description
-├─ screenshot.png          # Example analytics screenshot
-├─ csv_data/               # Folder with CSV datasets
-└─ analytics_results/      # Folder for CSV output from queries
-Notes
-Все SQL-запросы проверены и корректны.
+├─ main.py                 # Python-скрипт для выполнения запросов и сохранения CSV
+├─ queries.sql             # Все SQL аналитические запросы
+├─ README.md               # Описание проекта
+├─ screenshot.png          # Пример визуализации аналитики
+├─ csv_data/               # Папка с исходными CSV-дatasets
+└─ analytics_results/      # Папка для CSV-результатов запросов
 
-Python-скрипт автоматически сохраняет результаты в CSV.
+6️⃣ Примечания
 
-CSV-результаты можно использовать для визуализации в Apache Superset.
+Python-скрипт автоматически сохраняет результаты в формате CSV.
+
+CSV-файлы из папки analytics_results можно использовать для визуализации в Apache Superset.
