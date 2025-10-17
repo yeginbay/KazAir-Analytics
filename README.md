@@ -1,27 +1,28 @@
-KazAir Analytics
-Company
+KazAir Analytics ✈️
+About the Company
 
-KazAir Analytics — компания, занимающаяся анализом данных аэропортов, взлётно-посадочных полос и навигационных средств по всему миру для улучшения планирования авиационных маршрутов и инфраструктуры.
+KazAir Analytics — компания, занимающаяся анализом данных аэропортов, взлётно-посадочных полос и навигационных средств по всему миру.
+Цель — улучшение планирования авиационных маршрутов и инфраструктуры.
 
 Project Overview
 
-Этот проект анализирует данные о:
+Этот проект анализирует:
 
-Аэропортах
+Аэропорты
 
-Региональных делениях
+Региональные деления
 
-Навигационных средствах (navaids)
+Навигационные средства (navaids)
 
-Частотах аэропортов
+Частоты аэропортов
 
-Взлётно-посадочных полосах
+Взлётно-посадочные полосы
 
-Цель проекта — проводить аналитические исследования, включая:
+Примеры аналитики:
 
 Количество аэропортов по странам и континентам
 
-Длина и характеристики ВПП
+Длина и характеристики взлётно-посадочных полос
 
 Частоты и типы навигационных средств
 
@@ -31,34 +32,42 @@ Screenshot of Main Analytics
 
 Tools and Resources
 
-PostgreSQL / MySQL
+Database: PostgreSQL / MySQL
 
-Python (pandas, psycopg2)
+Programming: Python (pandas, psycopg2)
 
-Apache Superset
+Visualization: Apache Superset
 
-CSV datasets
+Data: CSV datasets
 
 Database Schema
 
-Таблицы: countries, regions, airports, navaids, airport_frequencies, runways
+Таблицы:
 
-PK и FK настроены
+Table Name	Description
+countries	Список стран
+regions	Региональные деления
+airports	Информация об аэропортах
+navaids	Навигационные средства
+airport_frequencies	Частоты аэропортов
+runways	Взлётно-посадочные полосы
 
-airports.ident — уникальный ключ для связи с navaids, frequencies и runways
+Primary & Foreign Keys настроены:
+
+airports.ident — уникальный ключ для связи с navaids, airport_frequencies и runways.
 
 How to Run the Project
 
-Установить PostgreSQL/MySQL.
+Установите PostgreSQL/MySQL
 
-Создать базу данных:
+Создайте базу данных:
 
 CREATE DATABASE airports_db;
 
 
-Создать таблицы через SQL (например, через pgAdmin).
+Создайте таблицы через SQL (например, через pgAdmin).
 
-Импортировать CSV-файлы в таблицы (в правильном порядке):
+Импортируйте CSV-файлы в правильном порядке:
 
 countries
 
@@ -72,7 +81,7 @@ airport_frequencies
 
 runways
 
-Настроить подключение к базе данных в main.py:
+Настройте подключение к базе в main.py:
 
 conn = psycopg2.connect(
     dbname="airports_db",
@@ -83,7 +92,7 @@ conn = psycopg2.connect(
 )
 
 
-Запустить Python-скрипт для выполнения аналитики и сохранения результатов:
+Запустите Python скрипт для аналитики:
 
 python main.py
 
@@ -92,5 +101,32 @@ python main.py
 
 SQL Queries
 
-Все аналитические запросы сохранены в queries.sql с комментариями по назначению каждого запроса.
+Все аналитические запросы сохранены в файле queries.sql.
+Примеры запросов:
+
+Количество аэропортов по странам:
+
+SELECT iso_country, COUNT(*) AS airport_count
+FROM airports
+GROUP BY iso_country
+ORDER BY airport_count DESC;
+
+
+Средняя длина ВПП по аэропортам:
+
+SELECT a.name AS airport, AVG(r.length_ft) AS avg_runway_length
+FROM runways r
+JOIN airports a ON r.airport_ident = a.ident
+GROUP BY a.name
+ORDER BY avg_runway_length DESC;
+
+Project Structure
+KazAir-Analytics/
+│
+├─ main.py                 # Python script to execute queries and save CSV
+├─ queries.sql             # All SQL analytical queries
+├─ README.md               # Project description
+├─ screenshot.png          # Example analytics screenshot
+├─ csv_data/               # Folder with CSV datasets
+└─ analytics_results/      # Folder for CSV output from queries
 
