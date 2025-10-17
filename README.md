@@ -24,8 +24,9 @@
 
 ---
 
-## Screenshot of Main Analytics
-![Analytics Screenshot](screenshot.png)
+## ERD Diagram
+<img width="1010" height="864" alt="image" src="https://github.com/user-attachments/assets/85dd903f-3be4-49f5-b227-7f67ce18996d" />
+
 
 ---
 
